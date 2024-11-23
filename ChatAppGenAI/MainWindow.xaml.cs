@@ -66,7 +66,7 @@ namespace ChatAppGenAI
             VM.Messages.RemoveAt(VM.Messages.Count - 1); // 그다음 메시지 삭제
         }
 
-        private void StartButton_Click(object sender, RoutedEventArgs e)
+        private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             // Start 버튼 동작 구현
         }
