@@ -17,6 +17,8 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage.Pickers;
+using Windows.Storage;
 using Windows.UI;
 
 // To learn more about WinUI, the WinUI project structure,
@@ -66,9 +68,54 @@ namespace ChatAppGenAI
             VM.Messages.RemoveAt(VM.Messages.Count - 1); // 그다음 메시지 삭제
         }
 
-        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        private async void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            // Start 버튼 동작 구현
+            // FileSavePicker 초기화
+            var savePicker = new FileSavePicker();
+
+            // WinUI 3에서는 이 설정이 필요 (파일 선택자가 올바른 창 컨텍스트에서 실행되도록 설정)
+            var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(this);
+            WinRT.Interop.InitializeWithWindow.Initialize(savePicker, hwnd);
+
+            // 파일 피커 속성 설정
+            savePicker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary; // 기본 위치 설정
+            savePicker.SuggestedFileName = DateTime.Now.ToString("yyyyMMdd_HHmmss") + "_messages"; // 기본 파일 이름 설정
+            savePicker.FileTypeChoices.Add("Text File", new[] { ".txt" }); // 파일 형식 추가
+
+            // 사용자가 파일을 선택하면 저장 경로 반환
+            StorageFile file = await savePicker.PickSaveFileAsync();
+            if (file != null)
+            {
+                try
+                {
+                    // 메시지 내용을 문자열로 변환
+                    string[] _typeText = { "USER", "PHI3" }; 
+                    var messagesText = VM.Messages.Select(msg => $"{msg.MsgDateTime}: [{_typeText[(int)msg.Type]}] {msg.Text}");
+
+                    // 파일 쓰기
+                    await FileIO.WriteLinesAsync(file, messagesText);
+
+                    // 성공 메시지 출력
+                    var dialog = new ContentDialog
+                    {
+                        Title = "Success",
+                        Content = $"Messages saved to {file.Path}",
+                        CloseButtonText = "OK"
+                    };
+                    await dialog.ShowAsync();
+                }
+                catch (Exception ex)
+                {
+                    // 오류 처리
+                    var errorDialog = new ContentDialog
+                    {
+                        Title = "Error",
+                        Content = $"Failed to save messages: {ex.Message}",
+                        CloseButtonText = "OK"
+                    };
+                    await errorDialog.ShowAsync();
+                }
+            }
         }
 
         private async void TextBox_KeyUp(object sender, KeyRoutedEventArgs e)
