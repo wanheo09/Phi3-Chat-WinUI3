@@ -38,7 +38,11 @@ namespace ChatAppGenAI
         }
         private void ClearButton_Click(object sender, RoutedEventArgs e)
         {
-            // Clear 버튼 동작 구현
+            // VM.Messages가 null이 아닌지 확인
+            if (VM.Messages != null)
+            {
+                VM.Messages.Clear(); // 모든 메시지 삭제
+            }
         }
 
         private void UndoButton_Click(object sender, RoutedEventArgs e)
