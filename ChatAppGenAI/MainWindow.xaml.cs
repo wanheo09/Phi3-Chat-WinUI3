@@ -43,7 +43,23 @@ namespace ChatAppGenAI
 
         private void UndoButton_Click(object sender, RoutedEventArgs e)
         {
-            // Undo 버튼 동작 구현
+            // VM.Messages가 ObservableCollection<Message> 또는 List<Message>라고 가정합니다.
+            if (VM.Messages == null || VM.Messages.Count == 0)
+            {
+                // 메시지가 없으면 아무 동작도 하지 않습니다.
+                return;
+            }
+
+            // 메시지가 하나만 있을 경우 안전하게 처리
+            if (VM.Messages.Count == 1)
+            {
+                VM.Messages.RemoveAt(VM.Messages.Count - 1); // 마지막 하나 삭제
+                return;
+            }
+
+            // 메시지가 2개 이상일 때, 마지막 두 개를 삭제
+            VM.Messages.RemoveAt(VM.Messages.Count - 1); // 마지막 메시지 삭제
+            VM.Messages.RemoveAt(VM.Messages.Count - 1); // 그다음 메시지 삭제
         }
 
         private void StartButton_Click(object sender, RoutedEventArgs e)
