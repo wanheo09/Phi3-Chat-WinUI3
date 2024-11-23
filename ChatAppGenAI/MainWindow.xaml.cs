@@ -36,6 +36,20 @@ namespace ChatAppGenAI
             this.InitializeComponent();
             VM = new VM(DispatcherQueue);
         }
+        private void ClearButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Clear 버튼 동작 구현
+        }
+
+        private void UndoButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Undo 버튼 동작 구현
+        }
+
+        private void StartButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Start 버튼 동작 구현
+        }
 
         private async void TextBox_KeyUp(object sender, KeyRoutedEventArgs e)
         {

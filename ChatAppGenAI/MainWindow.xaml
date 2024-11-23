@@ -52,6 +52,12 @@
                      IsIndeterminate="True" 
                      Visibility="{x:Bind local:MainWindow.BoolToVisibleInversed(VM.AcceptsMessages), Mode=OneWay}" 
                      HorizontalAlignment="Stretch"/>
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0">
+            <Button Content="Clear" Width="100" Margin="10,0" Click="ClearButton_Click"/>
+            <Button Content="Undo" Width="100" Margin="10,0" Click="UndoButton_Click"/>
+            <Button Content="Start" Width="100" Margin="10,0" Click="StartButton_Click"/>
+        </StackPanel>
+
 
     </Grid>
 </Window>
